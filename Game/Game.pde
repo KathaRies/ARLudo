@@ -3,22 +3,34 @@ Capture cam;
 Point2D_F64[][] tokens = new Point2D_F64[4][4];
 int boardSizeX = 1280;
 int boardSizeY = 720;
+int tokenSize = 100;
 
-int currentPlayer = 0; //1 = blue, 2 = red, 3 = green, 4 = yellow
+int activePlayer = 0; //1 = blue, 2 = red, 3 = green, 4 = yellow
 
 void setup() {
-    qrSetup();
-  
-  
-  for(int player = 0; player<4; player++){
-    for(int token = 0; token<4; token ++){
-      setColor(player+1);
-      tokens[player][token] = new Point2D_F64((20 + 20*token%2) + 20*player,20*token%2+20*player); //adjust layout
-      drawToken(tokens[player][token]);
-    }
-  }
-  
 
+  qrSetup();
+  boardSizeX = cam.width;
+  boardSizeY = cam.height;
+  setupPlayers();
+}
+
+void setupPlayers(){
+  setupTokens(new Point2D_F64(0,0),0);
+  setupTokens(new Point2D_F64(0,boardSizeY-2*tokenSize),1);
+  setupTokens(new Point2D_F64(boardSizeX-2*tokenSize,boardSizeY-2*tokenSize),2);
+  setupTokens(new Point2D_F64(boardSizeX-2*tokenSize,0),3);
+}
+
+void setupTokens(Point2D_F64 playerPosition, int playerIndex){
+  tokens[playerIndex][0] = addPoint_2D (playerPosition,new Point2D_F64(0,0)); 
+      drawToken(tokens[playerIndex][0]);
+      tokens[playerIndex][1] = addPoint_2D(playerPosition, new Point2D_F64(0 ,tokenSize)); 
+      drawToken(tokens[playerIndex][1]);
+      tokens[playerIndex][2] = addPoint_2D(playerPosition,new Point2D_F64(tokenSize,0)); 
+      drawToken(tokens[playerIndex][2]);
+      tokens[playerIndex][3] = addPoint_2D(playerPosition,new Point2D_F64(tokenSize,tokenSize)); 
+      drawToken(tokens[playerIndex][3]);
 }
 
 void draw(){
@@ -31,6 +43,9 @@ void drawGameState(){
   for(int player = 0; player<4; player++){
     for(int token = 0; token<4; token ++){
       setColor(player+1);
+      if(token == activeTokenIndex && player == activePlayer){
+        stroke(255,255,255);
+      } 
       drawToken(tokens[player][token]);
     }
   }
@@ -38,7 +53,7 @@ void drawGameState(){
 }
 
 void drawToken(Point2D_F64 t){
-  rect((float)t.x,(float)t.y,(float)(t.x+50.0),(float)(t.y+50.0));
+  rect((float)t.x,(float)t.y,tokenSize,tokenSize);
 }
 
 void setColor(int player){
@@ -53,6 +68,10 @@ void setColor(int player){
                 break;      
         default: stroke(0,0,0);
       }
+}
+
+Point2D_F64 addPoint_2D(Point2D_F64 a, Point2D_F64 b){
+  return new Point2D_F64(a.x + b.x, a.y + b.y);
 }
 
 void initializeCamera( int desiredWidth, int desiredHeight ) {

@@ -7,10 +7,11 @@ import boofcv.alg.fiducial.qrcode.QrCode;
 
 
 SimpleQrCode detector;
+int activeTokenIndex = 5;
 
 void qrSetup() {
   // Open up the camera so that it has a video feed to process
-  initializeCamera(640, 480);
+  initializeCamera(1280,720);
   surface.setSize(cam.width, cam.height);
 
 
@@ -36,6 +37,7 @@ void qrDraw() {
       
       switch(qr.message){
         case "blue": playerId = 1;
+                     checkTokenCollision(1,qr.bounds);
                             stroke(0,0,255);
                             break;
         case "red": playerId = 2;
@@ -62,4 +64,28 @@ void qrDraw() {
       endShape();
     }
   }
+}
+
+boolean checkTokenCollision(int player, Polygon2D_F64 user){
+  
+  for(int i = 0; i < 4; i++){
+    if(collisionRectRect((float)user.get(0).x, (float)user.get(0).y, (float)(user.get(1).y -user.get(0).x), (float) (user.get(3).y -user.get(0).x), (float)tokens[player][i].x,(float)tokens[player][i].y,(float)tokenSize,(float)tokenSize)){
+      activeTokenIndex = i;
+      return true;
+    }
+  }
+    return false;
+}
+
+boolean collisionRectRect(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h) {
+
+  // are the sides of one rectangle touching the other?
+
+  if (r1x + r1w >= r2x &&    // r1 right edge past r2 left
+      r1x <= r2x + r2w &&    // r1 left edge past r2 right
+      r1y + r1h >= r2y &&    // r1 top edge past r2 bottom
+      r1y <= r2y + r2h) {    // r1 bottom edge past r2 top
+        return true;
+  }
+  return false;
 }
