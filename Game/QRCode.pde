@@ -35,16 +35,16 @@ void qrDraw() {
      int playerId = 0;
       
       switch(qr.message){
-        case "Blue Player": playerId = 1;
+        case "blue": playerId = 1;
                             stroke(0,0,255);
                             break;
-        case "Red Player": playerId = 2;
+        case "red": playerId = 2;
                             stroke(255,0,0);
                             break;
-        case "Green Player": playerId = 3;
+        case "green": playerId = 3;
                             stroke(0,255,0);
                             break;
-        case "Yellow Player": playerId = 4;
+        case "yellow": playerId = 4;
                             stroke(255,255,0);
                             break;      
         default: playerId = 0;
