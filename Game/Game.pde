@@ -1,36 +1,55 @@
 Capture cam;
 
-Point2D_F64[][] tokens = new Point2D_F64[4][4];
 int boardSizeX = 1280;
 int boardSizeY = 720;
 int tokenSize = 100;
 
-int activePlayer = 0; //1 = blue, 2 = red, 3 = green, 4 = yellow
+List<Player> players = new ArrayList<Player>();
+boolean win = false;
+
+int activePlayer; //0 = blue, 1 = red, 2 = green, 3 = yellow
 
 void setup() {
 
   qrSetup();
+  //diceSetup();
+  
   boardSizeX = cam.width;
   boardSizeY = cam.height;
   setupPlayers();
+  activePlayer = 0;
 }
 
 void setupPlayers(){
-  setupTokens(new Point2D_F64(0,0),0);
-  setupTokens(new Point2D_F64(0,boardSizeY-2*tokenSize),1);
-  setupTokens(new Point2D_F64(boardSizeX-2*tokenSize,boardSizeY-2*tokenSize),2);
-  setupTokens(new Point2D_F64(boardSizeX-2*tokenSize,0),3);
+  players.add(new Player(#0000FF, new Point2D_F64(0,0)));
+  players.add(new Player(#ff0000, new Point2D_F64(0,boardSizeY-2*tokenSize)));
+  players.add(new Player(#00ff00, new Point2D_F64(boardSizeX-2*tokenSize,boardSizeY-2*tokenSize)));
+  players.add(new Player(#ffff00, new Point2D_F64(boardSizeX-2*tokenSize,0)));
 }
 
-void setupTokens(Point2D_F64 playerPosition, int playerIndex){
-  tokens[playerIndex][0] = addPoint_2D (playerPosition,new Point2D_F64(0,0)); 
-      drawToken(tokens[playerIndex][0]);
-      tokens[playerIndex][1] = addPoint_2D(playerPosition, new Point2D_F64(0 ,tokenSize)); 
-      drawToken(tokens[playerIndex][1]);
-      tokens[playerIndex][2] = addPoint_2D(playerPosition,new Point2D_F64(tokenSize,0)); 
-      drawToken(tokens[playerIndex][2]);
-      tokens[playerIndex][3] = addPoint_2D(playerPosition,new Point2D_F64(tokenSize,tokenSize)); 
-      drawToken(tokens[playerIndex][3]);
+void play(){
+ while(!win){
+  int roll = rollDice();
+  if(players.get(activePlayer).hasTokenOnBoard()){
+      chooseToken();
+  }else if(roll == 6){
+    setToken();
+  } else {
+    nextPlayer();
+  }
+ }
+}
+
+void setToken(){
+  println("Setting a new token on the board");
+}
+
+void chooseToken(){
+  println("Choosing a token to place on board");
+}
+
+void nextPlayer(){
+  activePlayer = ((activePlayer+1)%4);
 }
 
 void draw(){
@@ -40,35 +59,18 @@ void draw(){
 }
 
 void drawGameState(){
-  for(int player = 0; player<4; player++){
-    for(int token = 0; token<4; token ++){
-      setColor(player+1);
-      if(token == activeTokenIndex && player == activePlayer){
-        stroke(255,255,255);
-      } 
-      drawToken(tokens[player][token]);
+      drawTokens();
+}
+
+void drawTokens(){
+  for (Player p : players) {
+   stroke(p.Color);
+    for (Token t : p.tokens){
+      rect((float)t.position.x,(float)t.position.y,tokenSize,tokenSize);
     }
   }
-  
 }
 
-void drawToken(Point2D_F64 t){
-  rect((float)t.x,(float)t.y,tokenSize,tokenSize);
-}
-
-void setColor(int player){
-  switch(player){
-        case 1: stroke(0,0,255);
-                break;
-        case 2: stroke(255,0,0);
-                break;
-        case 3: stroke(0,255,0);
-                break;
-        case 4: stroke(255,255,0);
-                break;      
-        default: stroke(0,0,0);
-      }
-}
 
 Point2D_F64 addPoint_2D(Point2D_F64 a, Point2D_F64 b){
   return new Point2D_F64(a.x + b.x, a.y + b.y);

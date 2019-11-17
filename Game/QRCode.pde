@@ -68,12 +68,12 @@ void qrDraw() {
 
 boolean checkTokenCollision(int player, Polygon2D_F64 user){
   
-  for(int i = 0; i < 4; i++){
-    if(collisionRectRect((float)user.get(0).x, (float)user.get(0).y, (float)(user.get(1).y -user.get(0).x), (float) (user.get(3).y -user.get(0).x), (float)tokens[player][i].x,(float)tokens[player][i].y,(float)tokenSize,(float)tokenSize)){
-      activeTokenIndex = i;
-      return true;
-    }
-  }
+  //for(int i = 0; i < 4; i++){
+  //  if(collisionRectRect((float)user.get(0).x, (float)user.get(0).y, (float)(user.get(1).y -user.get(0).x), (float) (user.get(3).y -user.get(0).x), (float)tokens[player][i].x,(float)tokens[player][i].y,(float)tokenSize,(float)tokenSize)){
+  //    activeTokenIndex = i;
+  //    return true;
+  //  }
+  //}
     return false;
 }
 

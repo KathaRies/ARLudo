@@ -10,4 +10,5 @@ Install all needed Libraries.
 * tramontana
 * boofcv
 * webSockets
+* video
 
