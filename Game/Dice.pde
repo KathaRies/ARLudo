@@ -6,12 +6,14 @@ Tramontana t;
 float roll;
 float pitch;
 float yaw;
+boolean detectShake;
 
 int diceCount = 0;
 
 void diceSetup() {
-  t = new Tramontana(this, "192.249.31.61");
+  t = new Tramontana(this, "192.249.31.25");
   t.subscribeAttitude(5);
+  detectShake = true;
 }
 
 float r = 0.2;
@@ -21,14 +23,14 @@ float g = 1.0;
 
 int rollDice(){
   detectShake = true;
-  
-  while(detectShake){
+  while(!detectShake){
   }
+  println("roll " + diceCount + detectShake);
   return diceCount;
 }
 
 int shakeCount = 0;
-boolean detectShake = true;
+
 
 void onAttitudeEvent(String ipAddress, float newRoll, float newPitch, float newYaw)
 {
@@ -43,7 +45,7 @@ void onAttitudeEvent(String ipAddress, float newRoll, float newPitch, float newY
       shakeCount = 0;
       detectShake = false;
       diceCount = int(random(1,7));
-      print("roll " + diceCount + "\n");
+      println("roll " + diceCount + " " + detectShake);
     }
   }
 }
