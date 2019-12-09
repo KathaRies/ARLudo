@@ -3,49 +3,46 @@ import tramontana.library.*;
 import boofcv.factory.background.*;
 
 Tramontana t;
-float roll;
-float pitch;
-float yaw;
+float roll = 0;
+float pitch = 0;
+float yaw = 0;
 boolean detectShake;
+int shakeCount = 0;
 
 int diceCount = 0;
 
 void diceSetup() {
-  t = new Tramontana(this, "192.249.31.25");
+  t = new Tramontana(this, "192.249.31.72");
   t.subscribeAttitude(5);
   detectShake = true;
 }
 
-float r = 0.2;
-float b = 0.5;
-float g = 1.0;
 
-
-int rollDice(){
+void rollDice(){
   detectShake = true;
-  while(!detectShake){
-  }
-  println("roll " + diceCount + detectShake);
-  return diceCount;
+  shakeCount = 0;
 }
-
-int shakeCount = 0;
-
 
 void onAttitudeEvent(String ipAddress, float newRoll, float newPitch, float newYaw)
 {
   if(detectShake){
-    if(newRoll > 0.3 | newPitch > 0.3 | newYaw > 0.3){
+    if( abs(pitch-newPitch) > 0.5){ // abs(roll-newRoll) > 2 || abs(yaw-newYaw) > 5){
+      println(abs(roll-newRoll) +" " + abs(pitch-newPitch) + " " + newYaw);
       shakeCount++;
-     // t.setColor(1.0,0.0,0.0,1.0);
-    } else //t.setColor(1.0,0.0,1.0,1.0);
+      //t.setColor(1.0,0.0,0.0,1.0);
+    } //else t.setColor(1.0,0.0,1.0,1.0);
+    roll = newRoll;
+    pitch = newPitch;
+    yaw = newYaw;
   
-    if(shakeCount > 5){
+    if(shakeCount > 10){
       //t.setColor(0.0,1.0,1.0,1.0);
       shakeCount = 0;
       detectShake = false;
       diceCount = int(random(1,7));
-      println("roll " + diceCount + " " + detectShake);
+      diceRolled = true;
+      println("roll " + diceCount);
     }
+    
   }
 }

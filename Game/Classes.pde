@@ -3,6 +3,12 @@ class Token {
   int Color;
   Point2D_F64 position;
   
+  Token(){
+    Color = #000000;
+    position = new Point2D_F64(0,0);
+    onBoard = false;
+  }
+  
   Token(int c, Point2D_F64 p){
     Color = c;
     onBoard = false;

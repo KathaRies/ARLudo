@@ -1,18 +1,21 @@
-Capture cam;
+Capture cam; //<>// //<>// //<>// //<>// //<>// //<>//
 Board board;
 List<Player> players = new ArrayList<Player>();
 boolean win = false;
+boolean next = false;
+boolean TokenSelected = false;
+boolean diceRolled = false;
 
 int activePlayer; //0 = blue, 1 = red, 2 = green, 3 = yellow
-boolean TokenSelected = false;
+
 
 void setup() {
   qrSetup();
   diceSetup();
   board = new Board(cam.width, cam.height);
   setupPlayers();
-  activePlayer = 0; //<>//
-  play();
+  activePlayer = 0;
+  //play();
 }
 
 void setupPlayers() {
@@ -23,20 +26,29 @@ void setupPlayers() {
 }
 
 void play() {
-  while (!win) { //multithreading??? //<>//
-    int roll = rollDice(); //<>//
-    println("roll " + roll);
-    if (players.get(activePlayer).hasTokenOnBoard()) { //<>//
-      while(!TokenSelected){ //waiting for player to select token
+  if (!win) {
+    if (!detectShake && !diceRolled){
+      rollDice();
+    }else if (diceRolled) {
+      textSize(board.tokenSize);
+      text(diceCount, board.sizeX/2, board.sizeY/2); 
+      if (players.get(activePlayer).hasTokenOnBoard()) { 
+        Token token = new Token();
+        if (!TokenSelected) { //waiting for player to select token
+          token = selectToken();
+        } else {
+          board.moveToken(token, players.get(activePlayer), diceCount);
+          nextPlayer();
+        }
+      } else if (roll == 6) {
+        board.newToken(players.get(activePlayer));
+      } else {
+        nextPlayer();
       }
-      Token token = selectToken();
-      board.moveToken(token, players.get(activePlayer), roll);
-      nextPlayer();
-    } else if (roll == 6) { //<>//
-      board.newToken(players.get(activePlayer)); //<>//
-    } else {
-      nextPlayer();
-    }
+    } 
+      Player player = players.get(activePlayer);
+      rect((float)player.homePosition.x-5, (float)player.homePosition.y-5, board.tokenSize*2+10, board.tokenSize*2+10);
+    
   }
 }
 
@@ -49,17 +61,29 @@ Token selectToken() {
         if (collisionRectRect((float)player.user.get(0).x, (float)player.user.get(0).y, (float)(player.user.get(1).y -player.user.get(0).x), (float) (player.user.get(3).y - player.user.get(0).x), (float)t.position.x, (float)t.position.y, (float)board.tokenSize, (float)board.tokenSize))
         {
           TokenSelected = true;
+          println("token selected");
           return t;
         }
       }
     }
   }
-  return new Token(#000000, new Point2D_F64(0,0));
+  return new Token(#000000, new Point2D_F64(0, 0));
 }
 
 void nextPlayer() {
-  activePlayer = ((activePlayer+1)%4);
+  if (next) {
+    activePlayer = ((activePlayer+1)%4);
+    diceRolled = false;
+    next = false;
+    TokenSelected = false;
+    println("next player is player" + activePlayer);
+  }
 }
+
+void mouseClicked() {
+  next = true;
+}
+
 
 void win() {
   win = (players.get(activePlayer).tokens.length == 0);
@@ -68,6 +92,7 @@ void win() {
 void draw() {
   qrDraw();
   drawGameState();
+  play();
 }
 
 void drawGameState() {
