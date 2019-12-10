@@ -32,7 +32,7 @@ void play() {
     }else if (diceRolled) {
       textSize(board.tokenSize);
       text(diceCount, board.sizeX/2, board.sizeY/2); 
-      if (players.get(activePlayer).hasTokenOnBoard()) { 
+      if(true){ // (players.get(activePlayer).hasTokenOnBoard()) {    //////////////////just for testing
         Token token = new Token();
         if (!TokenSelected) { //waiting for player to select token
           token = selectToken();
@@ -52,21 +52,23 @@ void play() {
   }
 }
 
+//Triggers illigaleAgumentexeption: Index out of bounds if qr code wasn't previously detected
 Token selectToken() {
-  println("Choosing a token to place on board");
+  //println("Choosing a token to place on board");
   Player player = players.get(activePlayer);
-  for (Player p : players) {
-    if (p != player) {
-      for (Token t : p.tokens) {
-        if (collisionRectRect((float)player.user.get(0).x, (float)player.user.get(0).y, (float)(player.user.get(1).y -player.user.get(0).x), (float) (player.user.get(3).y - player.user.get(0).x), (float)t.position.x, (float)t.position.y, (float)board.tokenSize, (float)board.tokenSize))
+    
+      for (Token t : player.tokens) {
+        //corner order defined by QR code not actually how it is in the picture -> doesn't fit often
+        rect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1));
+        if (collisionRectRect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1), (float)t.position.x, (float)t.position.y, (float)board.tokenSize, (float)board.tokenSize))
         {
           TokenSelected = true;
           println("token selected");
           return t;
         }
       }
-    }
-  }
+    //}
+  //}
   return new Token(#000000, new Point2D_F64(0, 0));
 }
 

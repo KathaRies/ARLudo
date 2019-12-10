@@ -29,6 +29,7 @@ class Player{
     tokens[1] = new Token(Color,addPoint_2D(homePosition, new Point2D_F64(0 ,board.tokenSize))); 
     tokens[2] = new Token(Color,addPoint_2D(homePosition,new Point2D_F64(board.tokenSize,0))); 
     tokens[3] = new Token(Color,addPoint_2D(homePosition,new Point2D_F64(board.tokenSize,board.tokenSize))); 
+    user = new Polygon2D_F64();
   }
   boolean hasTokenOnBoard(){
     for (Token t : tokens){
@@ -55,11 +56,11 @@ class Board{
   void moveToken(Token token,Player player, int diceRoll){
     //if(endzone) player.tokens.delete(token)
     //if(player.tokens.empty()) win = true
-    println("moved token");
+    //println("moved token");
   }
   
   void newToken(Player player){ //<>//
-    println("setting new token on board");
+    //println("setting new token on board");
     //setToken
   }
   

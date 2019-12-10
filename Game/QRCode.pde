@@ -32,7 +32,7 @@ void qrDraw() {
     stroke(255, 0, 0);
 
     for ( QrCode qr : found ) {
-      println("message             "+qr.message);
+      //println("message             "+qr.message);
 
       switch(qr.message) {
       case "blue": players.get(0).user = qr.bounds;
