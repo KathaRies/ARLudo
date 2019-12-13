@@ -19,7 +19,7 @@ class Token {
   
   void draw(){
     fill(0,255,0);
-  println("token draw now");
+  //println("token draw now");
   pushMatrix();
   translate(360,360);
  
@@ -53,7 +53,7 @@ class Token {
 class Player{
   color Color;
   Token[] tokens = new Token[4];
-  Point2D_F64 homePosition;
+  //Point2D_F64 homePosition;
   Point2D_F64 user; //position of the QR code of that player
   int playernumber;
   Player(color c, int pno){
@@ -62,12 +62,12 @@ class Player{
     tokens[0] = new Token(Color,playernumber); 
     tokens[1] = new Token(Color,playernumber); 
     tokens[2] = new Token(Color,playernumber); 
-    tokens[3] = new Token(Color,playernumber); 
+    tokens[3] = new Token(Color,playernumber);  //<>//
      user = new Point2D_F64();
     }
   
   boolean hasTokenOnBoard(){
-    for (Token t : tokens){
+    for (Token t : tokens){ //<>//
       if(t.onBoard) return true;
     }
     return false;

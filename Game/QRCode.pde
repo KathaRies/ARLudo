@@ -35,7 +35,7 @@ void qrDraw() {
 
     image(img, 0, 0);
     } else {
-      //clear();
+      image(cam,1280,0);
     }
     
     // Configure the line's appearance

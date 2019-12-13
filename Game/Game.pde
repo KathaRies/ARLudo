@@ -1,4 +1,4 @@
-Capture cam; //<>// //<>// //<>// //<>// //<>// //<>//
+Capture cam; //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 Board board;
 List<Player> players = new ArrayList<Player>();
 boolean win = false;
@@ -12,27 +12,27 @@ int activePlayer; //0 = blue, 1 = red, 2 = green, 3 = yellow
 void setup() {
   board = new Board(1280, 720);
   qrSetup();
-  //diceSetup();
+  diceSetup();
   setupPlayers();
   activePlayer = 0;
   //play();
 }
 
 void setupPlayers() {
-  players.add(new Player(#FF0000,0));
-  players.add(new Player(#FFCC00,1));
-  players.add(new Player(#00FF00,2));
-  players.add(new Player(#0000FF,3));
+  players.add(new Player(#FF0000, 0));
+  players.add(new Player(#FFCC00, 1));
+  players.add(new Player(#00FF00, 2));
+  players.add(new Player(#0000FF, 3));
 }
 
 void play() {
   if (!win) {
-    if (!detectShake && !diceRolled){
+    if (!detectShake && !diceRolled) {
       rollDice();
-    }else if (diceRolled) {
+    } else if (diceRolled) {
       textSize(board.tokenSize);
       text(diceCount, board.sizeX/2, board.sizeY/2); 
-      if(players.get(activePlayer).hasTokenOnBoard()) {    //////////////////just for testing
+      if (players.get(activePlayer).hasTokenOnBoard()) {    //////////////////just for testing
         Token token = new Token();
         if (!TokenSelected) { //waiting for player to select token
           token = selectToken();
@@ -47,9 +47,8 @@ void play() {
         nextPlayer();
       }
     } 
-      Player player = players.get(activePlayer);
-      rect((float)player.homePosition.x-5, (float)player.homePosition.y-5, board.tokenSize*2+10, board.tokenSize*2+10);
-    
+    Player player = players.get(activePlayer);
+    //rect((float)player.homePosition.x-5, (float)player.homePosition.y-5, board.tokenSize*2+10, board.tokenSize*2+10);
   }
 }
 
@@ -57,25 +56,42 @@ void play() {
 Token selectToken() {
   //println("Choosing a token to place on board");
   Player player = players.get(activePlayer);
-    
-      for (Token t : player.tokens) {
-        if(distance(player.user,t.position) < board.tokenSize) {
-          TokenSelected = true;
-          println("token selected");
-          return t;
-        }
-        //corner order defined by QR code not actually how it is in the picture -> doesn't fit often
-        /*rect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1));
-        if (collisionRectRect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1), (float)t.position.x, (float)t.position.y, (float)board.tokenSize, (float)board.tokenSize))
-        {
-          TokenSelected = true;
-          println("token selected");
-          return t;
-        } */
-      }
-    //}
+
+  for (Token t : player.tokens) {
+    PVector u = new PVector((int)player.user.x, (int)player.user.y);
+    switch(player.playernumber) {
+    case 0: 
+      break;
+
+    case 1: 
+      u.rotate(radians(90));
+      break;
+
+    case 2: 
+      u.rotate(radians(180));
+      break;
+
+    case 3:  
+      u.rotate(radians(270));
+      break;
+    }
+    if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(path1[t.position][0],path1[t.position][1])) < board.tokenSize) {
+      TokenSelected = true;
+      println("token selected");
+      return t;
+    }
+    //corner order defined by QR code not actually how it is in the picture -> doesn't fit often
+    /*rect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1));
+     if (collisionRectRect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1), (float)t.position.x, (float)t.position.y, (float)board.tokenSize, (float)board.tokenSize))
+     {
+     TokenSelected = true;
+     println("token selected");
+     return t;
+     } */
+  }
   //}
-  return new Token(#000000, new Point2D_F64(0, 0));
+  //}
+  return new Token(#000000, 0);
 }
 
 void nextPlayer() {
@@ -99,15 +115,15 @@ void win() {
 
 void draw() {
   qrDraw();
-  if(board.initialized){
-  drawGameState();
-  play();
+  if (board.initialized) {
+    drawGameState();
+    play();
   }
 }
 
 void drawGameState() {
-  
-  board.draw();
+
+ // board.draw();
   drawTokens();
 }
 
@@ -140,12 +156,12 @@ Point2D_F64 subtractPoint_2D(Point2D_F64 a, Point2D_F64 b) {
   return new Point2D_F64(a.x - b.x, a.y - b.y);
 }
 
-Point2D_F64 divide(Point2D_F64 p, float f){
+Point2D_F64 divide(Point2D_F64 p, float f) {
   return new Point2D_F64(p.x/f, p.y/f);
 }
 
-float distance(Point2D_F64 a, Point2D_F64 b){
-  Point2D_F64 d = subtractPoint_2D(a,b);
+float distance(Point2D_F64 a, Point2D_F64 b) {
+  Point2D_F64 d = subtractPoint_2D(a, b);
   return sqrt((float)d.x * (float) d.x + (float)d.y * (float)d.y);
 }
 
