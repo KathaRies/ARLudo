@@ -10,20 +10,19 @@ int activePlayer; //0 = blue, 1 = red, 2 = green, 3 = yellow
 
 
 void setup() {
-  board = new Board(1000, 1000);
+  board = new Board(1280, 720);
   qrSetup();
   //diceSetup();
-  
   setupPlayers();
   activePlayer = 0;
   //play();
 }
 
 void setupPlayers() {
-  players.add(new Player(#0000FF, new Point2D_F64(0, 0)));
-  players.add(new Player(#ff0000, new Point2D_F64(0, board.sizeY-2*board.tokenSize)));
-  players.add(new Player(#00ff00, new Point2D_F64(board.sizeX-2*board.tokenSize, board.sizeY-2*board.tokenSize)));
-  players.add(new Player(#ffff00, new Point2D_F64(board.sizeX-2*board.tokenSize, 0)));
+  players.add(new Player(#FF0000,0));
+  players.add(new Player(#FFCC00,1));
+  players.add(new Player(#00FF00,2));
+  players.add(new Player(#0000FF,3));
 }
 
 void play() {
@@ -107,15 +106,16 @@ void draw() {
 }
 
 void drawGameState() {
-  drawTokens();
+  
   board.draw();
+  drawTokens();
 }
 
 void drawTokens() {
   for (Player p : players) {
     stroke(p.Color);
     for (Token t : p.tokens) {
-      rect((float)t.position.x, (float)t.position.y, board.tokenSize, board.tokenSize);
+      t.draw();
     }
   }
 }
@@ -151,14 +151,12 @@ float distance(Point2D_F64 a, Point2D_F64 b){
 
 void initializeCamera( int desiredWidth, int desiredHeight ) {
   String[] cameras = Capture.list();
-  println(cameras[0] + " secondd: " + cameras[1]);
 
   if (cameras.length == 0) {
     println("There are no cameras available for capture.");
     exit();
   } else {
     cam = new Capture(this, desiredWidth, desiredHeight);
-    //cam = new Capture(this, desiredWidth, desiredHeight, "HD WebCam");
     cam.start();
   }
 }
