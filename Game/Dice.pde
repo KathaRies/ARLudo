@@ -12,7 +12,7 @@ int shakeCount = 0;
 int diceCount = 0;
 
 void diceSetup() {
-  t = new Tramontana(this, "143.248.216.47");
+  t = new Tramontana(this, "192.249.31.68");
   t.subscribeAttitude(5);
   detectShake = true;
 }

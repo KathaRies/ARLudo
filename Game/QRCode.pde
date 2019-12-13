@@ -9,10 +9,14 @@ import boofcv.alg.fiducial.qrcode.QrCode;
 SimpleQrCode detector;
 int activeTokenIndex = 5;
 
+void BoardSetup(){
+  
+}
+
 void qrSetup() {
   // Open up the camera so that it has a video feed to process
-  initializeCamera(1280, 720);
-  surface.setSize(cam.width, cam.height);
+  initializeCamera(640, 480); //laptop webcam: 1280, 720
+  surface.setSize(2*board.sizeX, board.sizeY);
 
 
   detector = Boof.detectQR();
@@ -21,32 +25,45 @@ void qrSetup() {
 void qrDraw() {
   if (cam.available() == true) {
     cam.read();
-
+    
     List<QrCode> found = detector.detect(cam);
+    
+    if(!board.initialized){
+    PImage img;
+     img = loadImage("../Assets/board.png");
+     img.resize(board.sizeX,board.sizeY);
 
-    image(cam, 0, 0);
-
+    image(img, 0, 0);
+    } else {
+      //clear();
+    }
+    
     // Configure the line's appearance
     noFill();
     strokeWeight(5);
     stroke(255, 0, 0);
+    
 
     for ( QrCode qr : found ) {
       //println("message             "+qr.message);
 
       switch(qr.message) {
-      case "blue": players.get(0).user = qr.bounds;
+        
+      case "blue": players.get(0).user = subtractPoint_2D(getCenter(qr.bounds),new Point2D_F64(board.inCameraPosition.get(0).x,board.inCameraPosition.get(0).y));
         stroke(0, 0, 255);
         break;
-      case "red": players.get(1).user = qr.bounds;
+      case "red": players.get(1).user = subtractPoint_2D(getCenter(qr.bounds),new Point2D_F64(board.inCameraPosition.get(0).x,board.inCameraPosition.get(0).y));
           stroke(255, 0, 0);
         break;
-      case "green": players.get(2).user = qr.bounds;
+      case "green": players.get(2).user = subtractPoint_2D(getCenter(qr.bounds),new Point2D_F64(board.inCameraPosition.get(0).x,board.inCameraPosition.get(0).y));
         stroke(0, 255, 0);
         break;
-      case "yellow": players.get(3).user = qr.bounds;
+      case "yellow": players.get(3).user = subtractPoint_2D(getCenter(qr.bounds),new Point2D_F64(board.inCameraPosition.get(0).x,board.inCameraPosition.get(0).y));
         stroke(255, 255, 0);
-        break;      
+        break;    
+      case "board": board.inCameraPosition = qr.bounds;
+        board.initialized = true;
+        break;
       default: 
         stroke(0, 0, 0);
       }
@@ -62,4 +79,8 @@ void qrDraw() {
       endShape();
     }
   }
+}
+
+Point2D_F64 getCenter(Polygon2D_F64 poly){
+  return divide(subtractPoint_2D(poly.get(0),poly.get(2)),2);
 }

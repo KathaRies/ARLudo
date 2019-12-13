@@ -20,7 +20,7 @@ class Player{
   int Color;
   Token[] tokens = new Token[4];
   Point2D_F64 homePosition;
-  Polygon2D_F64 user; //position of the QR code of that player
+  Point2D_F64 user; //center position of the QR code of that player
   
   Player(int c, Point2D_F64 p){
     Color = c;
@@ -29,7 +29,7 @@ class Player{
     tokens[1] = new Token(Color,addPoint_2D(homePosition, new Point2D_F64(0 ,board.tokenSize))); 
     tokens[2] = new Token(Color,addPoint_2D(homePosition,new Point2D_F64(board.tokenSize,0))); 
     tokens[3] = new Token(Color,addPoint_2D(homePosition,new Point2D_F64(board.tokenSize,board.tokenSize))); 
-    user = new Polygon2D_F64();
+    user = new Point2D_F64();
   }
   boolean hasTokenOnBoard(){
     for (Token t : tokens){
@@ -43,10 +43,13 @@ class Board{
   int sizeX = 1280;
   int sizeY = 720;
   int tokenSize = 100;
+  Polygon2D_F64 inCameraPosition;
+  boolean initialized = false;
   
   Board(int width, int hight){
     sizeX = width;
     sizeY = hight;
+    initialized = false;
   }
   
   void draw(){
