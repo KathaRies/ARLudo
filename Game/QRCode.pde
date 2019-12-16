@@ -16,7 +16,7 @@ void BoardSetup(){
 void qrSetup() {
   // Open up the camera so that it has a video feed to process
   initializeCamera(640, 480); //laptop webcam: 1280, 720
-  surface.setSize(2*board.sizeX, board.sizeY);
+  surface.setSize(2*board.size, board.size);
 
 
   detector = Boof.detectQR();
@@ -31,12 +31,12 @@ void qrDraw() {
     if(!board.initialized){
     PImage img;
      img = loadImage("../Assets/board.png");
-     img.resize(board.sizeX,board.sizeY);
+     img.resize(board.size,board.size);
 
     image(img, 0, 0);
-    } else {
-      image(cam,1280,0);
     }
+      image(cam,board.size + 10,0);
+    
     
     // Configure the line's appearance
     noFill();
@@ -45,7 +45,7 @@ void qrDraw() {
     
 
     for ( QrCode qr : found ) {
-      //println("message             "+qr.message);
+      println("message             "+qr.message);
 
       switch(qr.message) {
         
@@ -63,6 +63,7 @@ void qrDraw() {
         break;    
       case "board": board.inCameraPosition = qr.bounds;
         board.initialized = true;
+        background(255);
         break;
       default: 
         stroke(0, 0, 0);

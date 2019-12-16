@@ -75,23 +75,21 @@ class Player{
 }
 
 class Board{
-  int sizeX = 1280;
-  int sizeY = 720;
+  int size = 720;
   int tokenSize = 100;
   Polygon2D_F64 inCameraPosition;
   boolean initialized = false;
   
   Board(int width, int hight){
-    sizeX = width;
-    sizeY = hight;
+    size = hight;
     initialized = false;
   }
   
+  //drawing the base game board
   void draw(){
     stroke(0);
     strokeWeight(1);
-    println("the board should draw now");
-        //draw the base game board
+    //println("the board should draw now");
     int sq_size= height/15; 
     rectMode(CENTER);
     rect(0,0,sq_size*15,sq_size*15);

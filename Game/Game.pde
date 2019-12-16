@@ -31,8 +31,10 @@ void play() {
       rollDice();
     } else if (diceRolled) {
       textSize(board.tokenSize);
-      text(diceCount, board.sizeX/2, board.sizeY/2); 
-      if (players.get(activePlayer).hasTokenOnBoard()) {    //////////////////just for testing
+      fill(players.get(activePlayer).Color);
+      text(diceCount, board.size/2, board.size/2); 
+      if (players.get(activePlayer).hasTokenOnBoard()) {    
+      // if(true){        ///just for testing
         Token token = new Token();
         if (!TokenSelected) { //waiting for player to select token
           token = selectToken();
@@ -59,22 +61,21 @@ Token selectToken() {
 
   for (Token t : player.tokens) {
     PVector u = new PVector((int)player.user.x, (int)player.user.y);
+    println(u.x + "," + u.y);
     switch(player.playernumber) {
     case 0: 
       break;
-
     case 1: 
       u.rotate(radians(90));
       break;
-
     case 2: 
       u.rotate(radians(180));
       break;
-
     case 3:  
       u.rotate(radians(270));
       break;
     }
+    println("Token: " + path1[t.position][0] + ","+ path1[t.position][1]);
     if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(path1[t.position][0],path1[t.position][1])) < board.tokenSize) {
       TokenSelected = true;
       println("token selected");
@@ -114,16 +115,17 @@ void win() {
 }
 
 void draw() {
-  qrDraw();
+  
   if (board.initialized) {
     drawGameState();
     play();
   }
+  qrDraw();
 }
 
 void drawGameState() {
 
- // board.draw();
+  board.draw();
   drawTokens();
 }
 
