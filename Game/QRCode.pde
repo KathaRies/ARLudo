@@ -82,7 +82,7 @@ void qrDraw() {
       
      // println("W: " + resW + "H: " + resH);
       // Draw a line around each detected QR Code
-      beginShape();
+     /* beginShape();
       for ( int i = 0; i < qr.bounds.size(); i++ ) {
         Point2D_F64 p = board.Camera2Board(qr.bounds.get(i));
        vertex((float)p.x,(float)p.y) ;
@@ -94,6 +94,8 @@ void qrDraw() {
         vertex((float)p.x,(float)p.y) ;
         //vertex( (int)(p.x), (int)(p.y));
       endShape();
+      
+      */
     }
   }
 }

@@ -17,7 +17,6 @@ void diceSetup() {
   detectShake = true;
 }
 
-
 void rollDice(){
   detectShake = true;
   shakeCount = 0;

@@ -91,7 +91,8 @@ Token selectToken() { //<>//
     
     println("Token: " + tt.x + ","+ tt.y);
     println("Player: " + u.x +" , " + u.y);
-    if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(tt.x,tt.y)) < board.tokenSize) {
+    ellipse(u.x,u.y,20,20);
+    if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(tt.x,tt.y)) < t.sq_size) {
       
       println("token selected");
       board.moveToken(t,diceCount);
