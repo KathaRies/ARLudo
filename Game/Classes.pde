@@ -155,11 +155,12 @@ class Board{
     for(int i=0;i<diceRoll;i++){
       token.position++;
       token.draw(); //<>//
+      delay(500);
     }
     println("moved token");
   }
-  
-  void newToken(Player player){ //<>// //<>//
+   //<>//
+  void newToken(Player player){ //<>//
     //println("setting new token on board");
     //setToken
   }
