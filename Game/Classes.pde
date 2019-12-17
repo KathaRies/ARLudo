@@ -1,13 +1,12 @@
 class Token {
-  boolean onBoard;
+  boolean onBoard = false;
   int Color;
   int position=0;
   int sq_size= height/15;
   int Playernumber;
   
   Token(){
-    Color = #000000;
-     
+    Color = #000000; 
     onBoard = false;
   }
   
@@ -68,9 +67,15 @@ class Player{
   
   boolean hasTokenOnBoard(){
     for (Token t : tokens){ //<>// //<>//
-      if(t.onBoard) return true;
+      if(t.onBoard) return true; //<>//
     }
     return false;
+  }
+  
+  int firstOffBoard(){
+   for(int i = 0; i< tokens.length;i++){
+     if(!tokens[i].onBoard) return i;
+  } return 4;
   }
 }
 
@@ -149,16 +154,14 @@ class Board{
   }
   
   void moveToken(Token token, int diceRoll){
-    //if(token.position==path1.length){
+    //if(token.position==path1.length){ //<>//
     //  player.tokens.delete(token);}
     //if(player.tokens.empty()) win = true
-    for(int i=0;i<diceRoll;i++){
+    for(int i = 0; i<diceRoll;i++){
       token.position++;
-      token.draw(); //<>//
-      double time=millis();
-      while(millis()<time+1000){}
-      }
-    println("moved token");
+      println("moved token"); //<>//
+    
+    }
   } //<>//
   
   void newToken(Player player){ //<>//

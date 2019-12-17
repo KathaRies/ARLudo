@@ -72,6 +72,7 @@ void qrDraw() {
         board.scaleX = board.size/(float)qr.bounds.getSideLength(0);
         board.scaleY = board.size/(float)qr.bounds.getSideLength(1);
         background(255);
+        board.draw();
         board.initialized = true;
         break;
       default: 

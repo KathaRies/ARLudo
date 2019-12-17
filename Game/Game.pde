@@ -1,4 +1,4 @@
-Capture cam; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+Capture cam; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 Board board;
 List<Player> players = new ArrayList<Player>();
 boolean win = false;
@@ -33,29 +33,34 @@ void play() {
       textSize(board.tokenSize);
       fill(players.get(activePlayer).Color);
       text(diceCount, board.size/2, board.size/2); 
-      //if (players.get(activePlayer).hasTokenOnBoard()) {    
-       if(true){        ///just for testing
+      if (players.get(activePlayer).hasTokenOnBoard()) {    
+      // if(true){        ///just for testing
         Token token = new Token();
         if (!TokenSelected) { //waiting for player to select token
           token = selectToken();
         } else {
-          board.moveToken(token, players.get(activePlayer), diceCount);
           win();
           nextPlayer();
         }
-      } else if (roll == 6) {
-        board.newToken(players.get(activePlayer));
+        
+      } else if (diceCount == 6) {
+        int f = players.get(activePlayer).firstOffBoard();
+        if(f!=4){
+            board.moveToken(players.get(activePlayer).tokens[f],1);
+            players.get(activePlayer).tokens[f].onBoard = true;
+            diceRolled = false;
+        }
       } else {
         nextPlayer();
       }
     } 
     Player player = players.get(activePlayer);
     //rect((float)player.homePosition.x-5, (float)player.homePosition.y-5, board.tokenSize*2+10, board.tokenSize*2+10);
-  }
+  } else {println("WINNER");}
 }
 
 //Triggers illigaleAgumentexeption: Index out of bounds if qr code wasn't previously detected
-Token selectToken() {
+Token selectToken() { //<>//
   //println("Choosing a token to place on board");
   Player player = players.get(activePlayer);
 
@@ -87,23 +92,14 @@ Token selectToken() {
     println("Token: " + tt.x + ","+ tt.y);
     println("Player: " + u.x +" , " + u.y);
     if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(tt.x,tt.y)) < board.tokenSize) {
-      TokenSelected = true;
+      
       println("token selected");
       board.moveToken(t,diceCount);
+      TokenSelected = true;
       return t;
     }
-    //corner order defined by QR code not actually how it is in the picture -> doesn't fit often
-    /*rect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1));
-     if (collisionRectRect((float)player.user.get(1).x, (float)player.user.get(1).y, (float)player.user.getSideLength(0), (float) player.user.getSideLength(1), (float)t.position.x, (float)t.position.y, (float)board.tokenSize, (float)board.tokenSize))
-     {
-     TokenSelected = true;
-     println("token selected");
-     return t;
-     } */
   }
-  //}
-  //}
-  return new Token(#000000, 0);
+  return new Token(#000000, 4);
 }
 
 void nextPlayer() {
@@ -129,7 +125,7 @@ void draw() {
   
   if (board.initialized) {
     drawGameState();
-    play();
+    play(); 
   }
   qrDraw();
 }
