@@ -14,7 +14,7 @@ void setup() {
   qrSetup();
   diceSetup();
   setupPlayers();
-  activePlayer = 0;
+  activePlayer = 0;  
   //play();
 }
 
@@ -33,8 +33,8 @@ void play() {
       textSize(board.tokenSize);
       fill(players.get(activePlayer).Color);
       text(diceCount, board.size/2, board.size/2); 
-      if (players.get(activePlayer).hasTokenOnBoard()) {    
-      // if(true){        ///just for testing
+      //if (players.get(activePlayer).hasTokenOnBoard()) {    
+       if(true){        ///just for testing
         Token token = new Token();
         if (!TokenSelected) { //waiting for player to select token
           token = selectToken();
@@ -60,23 +60,30 @@ Token selectToken() {
   Player player = players.get(activePlayer);
 
   for (Token t : player.tokens) {
-    PVector u = new PVector((int)player.user.x, (int)player.user.y);
-    println(u.x + "," + u.y);
+    PVector u = new PVector((float)player.user.x, (float)player.user.y); //<>//
+    PVector tt = new PVector((float)path1[t.position][0]*height/15, (float)path1[t.position][1]*height/15);
+    //println("player: " +u.x + "," + u.y);
+    
+    //u.add(new PVector(360,360));
     switch(player.playernumber) {
     case 0: 
       break;
     case 1: 
-      u.rotate(radians(90));
+      tt.rotate(radians(-90));
       break;
     case 2: 
-      u.rotate(radians(180));
+      tt.rotate(radians(-180));
       break;
     case 3:  
-      u.rotate(radians(270));
+      tt.rotate(radians(-270));
       break;
     }
-    println("Token: " + path1[t.position][0] + ","+ path1[t.position][1]);
-    if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(path1[t.position][0],path1[t.position][1])) < board.tokenSize) {
+    tt.add(360,360);
+
+    
+    println("Token: " + tt.x + ","+ tt.y);
+    println("Player: " + u.x +" , " + u.y);
+    if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(tt.x,tt.y)) < board.tokenSize) {
       TokenSelected = true;
       println("token selected");
       return t;
@@ -151,6 +158,7 @@ boolean collisionRectRect(float r1x, float r1y, float r1w, float r1h, float r2x,
   return false;
 }
 
+
 Point2D_F64 addPoint_2D(Point2D_F64 a, Point2D_F64 b) {
   return new Point2D_F64(a.x + b.x, a.y + b.y);
 }
@@ -160,6 +168,9 @@ Point2D_F64 subtractPoint_2D(Point2D_F64 a, Point2D_F64 b) {
 
 Point2D_F64 divide(Point2D_F64 p, float f) {
   return new Point2D_F64(p.x/f, p.y/f);
+}
+Point2D_F64 multiply(Point2D_F64 p, float fx,float fy) {
+  return new Point2D_F64(p.x*fx, p.y*fy);
 }
 
 float distance(Point2D_F64 a, Point2D_F64 b) {

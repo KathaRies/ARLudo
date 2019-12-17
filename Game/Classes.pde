@@ -62,7 +62,7 @@ class Player{
     tokens[0] = new Token(Color,playernumber); 
     tokens[1] = new Token(Color,playernumber); 
     tokens[2] = new Token(Color,playernumber); 
-    tokens[3] = new Token(Color,playernumber);  //<>//
+    tokens[3] = new Token(Color,playernumber); 
      user = new Point2D_F64();
     }
   
@@ -77,12 +77,22 @@ class Player{
 class Board{
   int size = 720;
   int tokenSize = 100;
-  Polygon2D_F64 inCameraPosition;
+  Point2D_F64 inCameraPosition;
+  float scaleX = 1.0;
+  float scaleY = 1.0;
   boolean initialized = false;
   
   Board(int width, int hight){
     size = hight;
     initialized = false;
+  }
+  
+  void setTransform(Polygon2D_F64 qr){
+    inCameraPosition = new Point2D_F64(qr.get(0).x,qr.get(0).y);
+  }
+  
+  Point2D_F64 Camera2Board(Point2D_F64 p){
+    return new Point2D_F64((p.x-inCameraPosition.x)*scaleX, (p.y-inCameraPosition.y)*scaleY);
   }
   
   //drawing the base game board
