@@ -67,7 +67,7 @@ class Player{
     }
   
   boolean hasTokenOnBoard(){
-    for (Token t : tokens){ //<>//
+    for (Token t : tokens){ //<>// //<>//
       if(t.onBoard) return true;
     }
     return false;
@@ -148,13 +148,18 @@ class Board{
     rect(w*sq_size,h*sq_size,l*sq_size,b*sq_size);
   }
   
-  void moveToken(Token token,Player player, int diceRoll){
-    //if(endzone) player.tokens.delete(token)
+  void moveToken(Token token, int diceRoll){
+    //if(token.position==path1.length){
+    //  player.tokens.delete(token);}
     //if(player.tokens.empty()) win = true
-    //println("moved token");
+    for(int i=0;i<diceRoll;i++){
+      token.position++;
+      token.draw(); //<>//
+    }
+    println("moved token");
   }
   
-  void newToken(Player player){ //<>//
+  void newToken(Player player){ //<>// //<>//
     //println("setting new token on board");
     //setToken
   }

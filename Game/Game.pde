@@ -1,4 +1,4 @@
-Capture cam; //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+Capture cam; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 Board board;
 List<Player> players = new ArrayList<Player>();
 boolean win = false;
@@ -60,7 +60,7 @@ Token selectToken() {
   Player player = players.get(activePlayer);
 
   for (Token t : player.tokens) {
-    PVector u = new PVector((float)player.user.x, (float)player.user.y); //<>//
+    PVector u = new PVector((float)player.user.x, (float)player.user.y); //<>// //<>//
     PVector tt = new PVector((float)path1[t.position][0]*height/15, (float)path1[t.position][1]*height/15);
     //println("player: " +u.x + "," + u.y);
     
@@ -89,6 +89,7 @@ Token selectToken() {
     if (distance(new Point2D_F64(u.x,u.y), new Point2D_F64(tt.x,tt.y)) < board.tokenSize) {
       TokenSelected = true;
       println("token selected");
+      board.moveToken(t,diceCount);
       return t;
     }
     //corner order defined by QR code not actually how it is in the picture -> doesn't fit often
