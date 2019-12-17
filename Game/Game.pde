@@ -64,18 +64,21 @@ Token selectToken() {
     PVector tt = new PVector((float)path1[t.position][0]*height/15, (float)path1[t.position][1]*height/15);
     //println("player: " +u.x + "," + u.y);
     
+    tt.add(-360,-360);
+    
     //u.add(new PVector(360,360));
     switch(player.playernumber) {
+      
     case 0: 
       break;
     case 1: 
-      tt.rotate(radians(-90));
+      tt.rotate(radians(90));
       break;
     case 2: 
-      tt.rotate(radians(-180));
+      tt.rotate(radians(180));
       break;
     case 3:  
-      tt.rotate(radians(-270));
+      tt.rotate(radians(270));
       break;
     }
     tt.add(360,360);

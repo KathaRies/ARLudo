@@ -54,16 +54,16 @@ void qrDraw() {
       switch(qr.message) {
         
       case "blue":
-      players.get(0).user =  board.Camera2Board(getCenter(qr.bounds));
+      players.get(3).user =  board.Camera2Board(getCenter(qr.bounds));
         stroke(0, 0, 255);
         break;
-      case "red": players.get(1).user =  board.Camera2Board(getCenter(qr.bounds));
+      case "red": players.get(0).user =  board.Camera2Board(getCenter(qr.bounds));
           stroke(255, 0, 0);
         break;
       case "green": players.get(2).user =  board.Camera2Board(getCenter(qr.bounds));
         stroke(0, 255, 0);
         break;
-      case "yellow": players.get(3).user = board.Camera2Board(getCenter(qr.bounds));
+      case "yellow": players.get(1).user = board.Camera2Board(getCenter(qr.bounds));
         stroke(255, 255, 0);
         break;    
       case "board": board.setTransform(qr.bounds); //<>//
